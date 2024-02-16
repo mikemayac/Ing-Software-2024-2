@@ -87,6 +87,7 @@ class TennisMatch:
         if self.players[player1]['points'] == 'game' or self.players[player2]['points'] == 'game':
             self.check_game_winner()
 
+
     def check_game_winner(self):
         """
         Gana un juego:
@@ -96,14 +97,21 @@ class TennisMatch:
         # Agregamos el conteo a games en base al jugador que haya ganado los puntos
         if self.players[player1]['points'] == 'game':
             self.players[player1]['games'] += 1
+            # Decimos quien gano ese juego
+            print(f'El juego #{self.games_played} lo ha ganado {player1}, ahora se resetean los puntos.')
         else:
             self.players[player2]['games'] += 1
+            print(f'El juego #{self.games_played} lo ha ganado {player2}, ahora se resetean los puntos.')
 
         # Reiniciamos el conteo de puntos
         self.players[player1]['points'] = 0
         self.players[player2]['points'] = 0
 
+        # Sumamos un juego jugado.
+        self.games_played += 1
 
+        # Mostramos el score actual
+        self.display_score(self.players)
 
     def check_set_winner(self):
         """
@@ -162,8 +170,7 @@ class TennisMatch:
         print(f"\n*** Se esta jugando un partido de tennis en este momento, es el juego #{self.games_played} ***")
         # Imprimimos el status del juego.
         self.display_score(self.players)
-        # Aumentamos el contador de juegos jugados en uno para el siguiente juego.
-        self.games_played += 1
+        # Ejecutamos el partido hasta que haya un ganador
         while self.players[player1]['sets'] != '2' and self.players[player2]['sets'] != '2':
             tiro = self.shot_election(player1, player2)
             self.score_point(tiro)
