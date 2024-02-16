@@ -1,4 +1,4 @@
-from random import randint
+from typing import Dict, Any
 
 
 class TennisMatch:
@@ -9,7 +9,7 @@ class TennisMatch:
         }
         self.current_server = player1  # Alternará después de cada juego.
         self.match_winner = None
-        self.game_state = "0-0"  # Para control de puntos dentro de un juego.
+        # self.game_state = "0-0"  # Para control de puntos dentro de un juego.
         self.sets_to_win = 2  # Mejor de 3 sets.
         self.games_played = 1
 
@@ -64,6 +64,7 @@ class TennisMatch:
 
     def check_game_winner(self):
         """
+        Gana un juego:
         Determina si un jugador ha ganado un juego dentro del set actual.
         Actualiza el conteo de juegos del ganador y resetea los puntos de ambos jugadores.
         También verifica condiciones de 'deuce' y 'ventaja'.
@@ -72,7 +73,7 @@ class TennisMatch:
 
     def check_set_winner(self):
         """
-        Ganar un Set
+        Gana un Set:
         Implementa la lógica para determinar si un jugador ha ganado un set (alcanzando 6 juegos con una diferencia de
         al menos 2 juegos). También debe manejar casos especiales como 7-5 o 8-6.
         :return:
@@ -81,6 +82,7 @@ class TennisMatch:
 
     def check_match_winner(self):
         """
+        Gana ya totalmente el partido:
         Verificar si un jugador ha ganado el partido.
         Debe revisar si alguno de los jugadores ha alcanzado los 2 sets ganados necesarios en un partido al mejor de 3 sets.
         Actualiza self.match_winner con el nombre del ganador del partido cuando se determina un ganador.
@@ -105,11 +107,11 @@ class TennisMatch:
         """
         pass
 
-    def display_score(self, players):
+    def display_score(self, players: Dict[str, Dict[str, Any]]) -> None:
         """
         Utilizada para mostrar el marcador actual, incluidos los puntos, juegos y sets para cada jugador.
         Debe reflejar la lógica correcta del marcador y el estado actual del partido.
-        :return:
+        :return: No regresa nada, solo imprime la cadena.
         """
         for player, stats in players.items():
             print(f"{player} tiene {stats['points']} puntos en este juego, ha ganado {stats['games']} juegos y ha "
