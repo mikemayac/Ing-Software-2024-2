@@ -1,3 +1,4 @@
+# Ejercicio 1: Valles
 def contar_valles(caminata: str) -> int:
     """
     Calcula el número de valles en una caminata.
@@ -53,4 +54,36 @@ print(f"Caso de prueba largo: {'Correcto' if resultado_obtenido_largo == resulta
 print(f"Longitud de entrada: {len(entrada_larga)}")
 print(f"Resultado esperado: {resultado_esperado_largo}")
 print(f"Resultado obtenido: {resultado_obtenido_largo}\n")
+
+
+# Ejercicio 2: Arbol binario
+class Nodo:
+    def __init__(self, valor):
+        self.valor = valor
+        self.izquierdo = None
+        self.derecho = None
+
+
+class ArbolBinarioOrdenado:
+    def __init__(self):
+        self.raiz = None
+
+    def agregar(self, valor):
+        if not self.raiz:
+            self.raiz = Nodo(valor)
+        else:
+            self._agregar(valor, self.raiz)
+
+    def _agregar(self, valor, nodo):
+        if valor <= nodo.valor:
+            if nodo.izquierdo:
+                self._agregar(valor, nodo.izquierdo)
+            else:
+                nodo.izquierdo = Nodo(valor)
+        else:
+            if nodo.derecho:
+                self._agregar(valor, nodo.derecho)
+            else:
+                nodo.derecho = Nodo(valor)
+
 
