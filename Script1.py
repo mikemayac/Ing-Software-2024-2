@@ -77,20 +77,33 @@ class TennisMatch:
         elif current_points in points_to_games:
             winner['points'] = points_to_games[current_points]
 
+        # Mostramos en pantalla quien se lleva el punto
         if shot == 1:
             print(f"Punto para {player1}.")
         else:
             print(f"Punto para {player2}.")
         self.display_score(self.players)
 
+        if self.players[player1]['points'] == 'game' or self.players[player2]['points'] == 'game':
+            self.check_game_winner()
+
     def check_game_winner(self):
         """
         Gana un juego:
         Determina si un jugador ha ganado un juego dentro del set actual.
         Actualiza el conteo de juegos del ganador y resetea los puntos de ambos jugadores.
-        También verifica condiciones de 'deuce' y 'ventaja'.
         """
-        pass
+        # Agregamos el conteo a games en base al jugador que haya ganado los puntos
+        if self.players[player1]['points'] == 'game':
+            self.players[player1]['games'] += 1
+        else:
+            self.players[player2]['games'] += 1
+
+        # Reiniciamos el conteo de puntos
+        self.players[player1]['points'] = 0
+        self.players[player2]['points'] = 0
+
+
 
     def check_set_winner(self):
         """
@@ -146,22 +159,12 @@ class TennisMatch:
         estructuras try-except.
         :return:
         """
-        # while not self.match_winner:
-        #     try:
-        #         # # Obtener entrada del usuario y actualizar el marcador.
-        #         # input_str = input("Ingrese el jugador que gana el punto: ")
-        #
-        #         self.playing(player1, player2)
-        #         # self.score_point(input_str)
-        #         self.display_score()
-        #     except Exception as e:
-        #         print(f"Error: {e}. Intente nuevamente.")
         print(f"\n*** Se esta jugando un partido de tennis en este momento, es el juego #{self.games_played} ***")
         # Imprimimos el status del juego.
         self.display_score(self.players)
         # Aumentamos el contador de juegos jugados en uno para el siguiente juego.
         self.games_played += 1
-        while self.players[player1]['points'] != 'game' and self.players[player2]['points'] != 'game':
+        while self.players[player1]['sets'] != '2' and self.players[player2]['sets'] != '2':
             tiro = self.shot_election(player1, player2)
             self.score_point(tiro)
 
