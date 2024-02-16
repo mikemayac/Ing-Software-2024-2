@@ -13,7 +13,27 @@ class TennisMatch:
         self.sets_to_win = 2  # Mejor de 3 sets.
         self.games_played = 1
 
-    def score_point(self, player):
+    def shot_election(self, player1: str, player2: str) -> int:
+        """
+        Funcion que nos permite introducir por consola para quien es el tiro del jugador.
+        :param player1: Jugador1 a sumar el punto.
+        :param player2: Jugador2 a sumar el punto.
+        :return: Retorna el tiro, 1 o 2, o sea el jugador que gana el punto.
+        """
+        # Maneja solo la correcta entrada de 1 y 2.
+        while True:
+            try:
+                shot = int(input(
+                    f"Elige quien anota el punto de los jugadores, digita 1 es para {player1} y 2 es para {player2}: "))
+                if shot == 1 or shot == 2:
+                    return shot  # Sale del bucle porque la entrada es valida.
+                else:
+                    # Lanza una excepción personalizada si la entrada no es 1 o 2.
+                    raise ValueError("Número introducido no válido")
+            except ValueError as e:
+                print(f"Solo puedes introducir 1 o 2, prueba de nuevo! {e} \n")
+
+    def score_point(self, shot):
         """
         Puntuación de los Juegos:
         Esta función se encarga de actualizar la puntuación de los juegos basándose en los puntos ganados por los
@@ -25,10 +45,22 @@ class TennisMatch:
         Dentro de score_point, necesitas manejar el caso de "deuce" (40-40), donde un jugador debe obtener dos puntos
         consecutivos para ganar el juego. Esto implica gestionar la "ventaja" y volver a "deuce" si el jugador contrario
         gana el siguiente punto.
+        :param shot:
         :param player:
         :return:
         """
-        pass
+        # Si el tiro es para jugador 1, le sumamos un punto y se imprime la puntuacion
+        if shot == '1':
+            self.players[player1]['points'] += 1
+            print(f"Punto para {player1}.")
+            print(
+                f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
+        # Si el tiro es para jugador 2, le sumamos un punto y se imprime la puntuacion
+        else:  # Para player2, cubre del 11 al 15.
+            self.players[player2]['points'] += 1
+            print(f"Punto para {player2}.")
+            print(
+                f"El marcador es {player2}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
 
     def check_game_winner(self):
         """
@@ -82,50 +114,7 @@ class TennisMatch:
         for player, stats in players.items():
             print(f"{player} tiene {stats['points']} puntos en este juego, ha ganado {stats['games']} juegos y ha "
                   f"sido el mejor en {stats['sets']} sets.")
-
-    def shot_election(self, player1, player2):
-        """
-        Funcion que nos permite introducir por consola para quien es el tiro del jugador.
-        :param player1: Jugador1 a sumar el punto.
-        :param player2: Jugador2 a sumar el punto.
-        :return:
-        """
-        while True:
-            print("Elige quien anota el punto de los jugadores.")
-            try:
-                shot = input(f"1 es para {player1} y 2 es para {player2}: ")
-                if shot == '1' or shot == '2':
-                    break  # Sale del bucle porque la entrada es valida.
-            except ValueError as e:
-                print(f"Solo puedes introducir 1 o 2, prueba de nuevo! ({e})")
-
-        # Si el tiro es para jugador 1, le sumamos un punto y se imprime la puntuacion
-        if shot == '1':
-            self.players[player1]['points'] += 1
-            print(f"Punto para {player1}.")
-            print(
-                f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
-        # Si el tiro es para jugador 2, le sumamos un punto y se imprime la puntuacion
-        else:  # Para player2, cubre del 11 al 15.
-            self.players[player2]['points'] += 1
-            print(f"Punto para {player2}.")
-            print(
-                f"El marcador es {player2}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
-
-    def playing(self, player1, player2):
-        """
-        Funcion que va a servir para simular los golpeos de pelota de cada juego entre los jugadores en cada juego.
-        :param player1: Jugador uno que introduzca el usuario.
-        :param player2: Jugador dos que introduzca el usuario.
-        :return:
-        """
-        print(f"\n*** Se esta jugando un partido de tennis en este momento, es el juego #{self.games_played} ***\n")
-        # Imprimimos el status del juego.
-        self.display_score(self.players)
-        # Aumentamos el contador de juegos jugados en uno para el siguiente juego.
-        self.games_played += 1
-
-
+        print()  # Salto de linea
 
     def main(self):
         """
@@ -144,7 +133,12 @@ class TennisMatch:
         #         self.display_score()
         #     except Exception as e:
         #         print(f"Error: {e}. Intente nuevamente.")
-        self.playing(player1, player2)
+        print(f"\n*** Se esta jugando un partido de tennis en este momento, es el juego #{self.games_played} ***\n")
+        # Imprimimos el status del juego.
+        self.display_score(self.players)
+        # Aumentamos el contador de juegos jugados en uno para el siguiente juego.
+        self.games_played += 1
+        self.shot_election(player1, player2)
 
 
 if __name__ == "__main__":
