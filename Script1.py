@@ -2,10 +2,10 @@ from typing import Dict, Any
 
 
 class TennisMatch:
-    def __init__(self, player1, player2):
+    def __init__(self):
         self.players = {
-            player1: {'sets': 0, 'games': 0, 'points': 0},
-            player2: {'sets': 0, 'games': 0, 'points': 0}
+            player1: {'points': 0, 'games': 0, 'sets': 0},
+            player2: {'points': 0, 'games': 0, 'sets': 0}
         }
         self.current_server = player1  # Alternará después de cada juego.
         self.match_winner = None
@@ -24,7 +24,7 @@ class TennisMatch:
         while True:
             try:
                 shot = int(input(
-                    f"Elige quien anota el punto de los jugadores, digita 1 es para {player1} y 2 es para {player2}: "))
+                    f"Elige quien gana el punto, digita 1 para {player1} y 2 es para {player2}: "))
                 if shot == 1 or shot == 2:
                     return shot  # Sale del bucle porque la entrada es valida.
                 else:
@@ -49,54 +49,39 @@ class TennisMatch:
         :param player:
         :return:
         """
-        match shot:
-            case 1: # Si el punto es para el jugador 1.
-                # Jugador 1, 15 puntos.
-                if self.players[player1]['points'] == 0:
-                    self.players[player1]['points'] += 15
-                    print(f"Punto para {player1}.")
-                    print(f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
-                # Jugador 1, 30 puntos.
-                elif self.players[player1]['points'] == 15:
-                    self.players[player1]['points'] += 30
-                    print(f"Punto para {player1}.")
-                    print(f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
-                # Jugador 1, 40 puntos.
-                elif self.players[player1]['points'] == 30:
-                    self.players[player1]['points'] += 40
-                    print(f"Punto para {player1}.")
-                    print(f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
-                # Jugador 1, game
-                elif self.players[player1]['points'] == 40:
-                    self.players[player1]['points'] = 'game'
-                    print(f"Punto para {player1}.")
-                    print(f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
+        # Determina el jugador que gana el punto y el oponente.
+        if shot == 1:
+            winner = self.players[player1] # winner es por quien votaron que ganara el punto
+            opponent = self.players[player2] # opponent es a quien no votaron
+        else:
+            winner = self.players[player2]
+            opponent = self.players[player1]
 
-            case 2:  # Si el punto es para el jugador 2.
-                # Jugador 2, 15 puntos.
-                if self.players[player1]['points'] == 0:
-                    self.players[player1]['points'] += 15
-                    print(f"Punto para {player1}.")
-                    print(
-                        f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
-                # Jugador 2, 30 puntos.
-                elif self.players[player1]['points'] == 15:
-                    self.players[player1]['points'] += 30
-                    print(f"Punto para {player1}.")
-                    print(
-                        f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
-                # Jugador 2, 40 puntos.
-                elif self.players[player1]['points'] == 30:
-                    self.players[player1]['points'] += 40
-                    print(f"Punto para {player1}.")
-                    print(
-                        f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
-                # Jugador 2, game
-                elif self.players[player1]['points'] == 40:
-                    self.players[player1]['points'] = 'game'
-                    print(f"Punto para {player1}.")
-                    print(
-                        f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
+        # Diccionario para actualizar el puntaje de acuerdo al puntaje actual
+        points_to_games = {0: 15, 15: 30, 30: 40}
+
+        # Asigna el nuevo puntaje a quien ganó en un caso no especial (donde no hay empates).
+        current_points = winner['points']
+
+        # Casos donde se encuentra por ganar el juego estando en los 40 puntos y adv.
+        if current_points == 40 and opponent['points'] != 40 and opponent['points'] != 'adv': # 1er caso donde no hay empates y gana por 2 tiros.
+            winner['points'] = 'game'
+        elif current_points == 40 and opponent['points'] == 40: # 2ndo caso, hay empate y se asigna adv.
+            # Otorga la ventaja porque aqui no la tiene.
+            winner['points'] = 'adv'
+        elif current_points == 'adv' and opponent['points'] == 40: #3er caso, hay adv y gana por volver a tirar.
+            winner['points'] = 'game'
+        elif current_points == 40 and opponent['points'] == 'adv': #4to caso, se baja de adv al oponente a 40.
+            opponent['points'] = 40
+        # Asignacion de los puntajes menores a 40
+        elif current_points in points_to_games:
+            winner['points'] = points_to_games[current_points]
+
+        if shot == 1:
+            print(f"Punto para {player1}.")
+        else:
+            print(f"Punto para {player2}.")
+        self.display_score(self.players)
 
     def check_game_winner(self):
         """
@@ -149,9 +134,9 @@ class TennisMatch:
         Debe reflejar la lógica correcta del marcador y el estado actual del partido.
         :return: No regresa nada, solo imprime la cadena.
         """
+        print('\n**********MARCADOR ACTUAL**********')
         for player, stats in players.items():
-            print(f"{player} tiene {stats['points']} puntos en este juego, ha ganado {stats['games']} juegos y ha "
-                  f"sido el mejor en {stats['sets']} sets.")
+            print(f"{player} [puntos:{stats['points']} juegos:{stats['games']} sets:{stats['sets']}]")
         print()  # Salto de linea
 
     def main(self):
@@ -171,16 +156,19 @@ class TennisMatch:
         #         self.display_score()
         #     except Exception as e:
         #         print(f"Error: {e}. Intente nuevamente.")
-        print(f"\n*** Se esta jugando un partido de tennis en este momento, es el juego #{self.games_played} ***\n")
+        print(f"\n*** Se esta jugando un partido de tennis en este momento, es el juego #{self.games_played} ***")
         # Imprimimos el status del juego.
         self.display_score(self.players)
         # Aumentamos el contador de juegos jugados en uno para el siguiente juego.
         self.games_played += 1
-        self.shot_election(player1, player2)
+        while self.players[player1]['points'] != 'game' and self.players[player2]['points'] != 'game':
+            tiro = self.shot_election(player1, player2)
+            self.score_point(tiro)
 
 
 if __name__ == "__main__":
+    print("Bienvenido al juego de tennis! \nVan a jugar 2 jugadores, ingresa sus nombres.\n")
     player1 = input("Nombre del jugador 1: ")
     player2 = input("Nombre del jugador 2: ")
-    match = TennisMatch(player1, player2)
+    match = TennisMatch()
     match.main()
