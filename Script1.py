@@ -9,9 +9,9 @@ class TennisMatch:
         }
         self.current_server = player1  # Alternará después de cada juego.
         self.match_winner = None
-        # self.game_state = "0-0"  # Para control de puntos dentro de un juego.
         self.sets_to_win = 2  # Mejor de 3 sets.
         self.games_played = 1
+        self.gametime = True
 
     def shot_election(self, player1: str, player2: str) -> int:
         """
@@ -84,9 +84,17 @@ class TennisMatch:
             print(f"Punto para {player2}.")
         self.display_score(self.players)
 
+        # Si ya algun jugador marca game se manda a llamar a la funcion que reinicia los puntos y agrega puntos a games.
         if self.players[player1]['points'] == 'game' or self.players[player2]['points'] == 'game':
             self.check_game_winner()
 
+        # Si el valor en games es mayor o igual a 6 empezamos a hacer las evaluaciones de quien gana el set.
+        if self.players[player1]['games'] >= 6 or self.players[player2]['games'] >= 6:
+            self.check_set_winner()
+
+        # Funcion para ganar el partido por mayoria de sets y terminar con el bucle while del juego.
+        if self.players[player1]['sets'] == 2 or self.players[player2]['sets'] == 2:
+            self.check_match_winner()
 
     def check_game_winner(self):
         """
@@ -120,7 +128,30 @@ class TennisMatch:
         al menos 2 juegos). También debe manejar casos especiales como 7-5 o 8-6.
         :return:
         """
-        pass
+        # Agregamos el conteo a sets en base al jugador que haya ganado al menos 6 juegos y la diferencia de juegos con
+        # el otro jugador sea >= 2
+
+        games_player1 = self.players[player1]['games']
+        games_player2 = self.players[player2]['games']
+
+        if games_player1 > games_player2: # El set iria para player1 al tener mas juegos
+            if abs(games_player1 - games_player2) >= 2:
+                self.players[player1]['sets'] += 1
+                print(f'El set lo ha ganado {player1}')
+                # Reiniciamos el conteo de games
+                self.players[player1]['games'] = 0
+                self.players[player2]['games'] = 0
+                # Mostramos el score actual
+                self.display_score(self.players)
+        else: # El set iria para player2 al tener mas juegos
+            if abs(games_player1 - games_player2) >= 2:
+                self.players[player2]['sets'] += 1
+                print(f'El set lo ha ganado {player2}')
+                # Reiniciamos el conteo de games
+                self.players[player1]['games'] = 0
+                self.players[player2]['games'] = 0
+                # Mostramos el score actual
+                self.display_score(self.players)
 
     def check_match_winner(self):
         """
@@ -129,7 +160,14 @@ class TennisMatch:
         Debe revisar si alguno de los jugadores ha alcanzado los 2 sets ganados necesarios en un partido al mejor de 3 sets.
         Actualiza self.match_winner con el nombre del ganador del partido cuando se determina un ganador.
         """
-        pass
+        if self.players[player1]['sets'] == self.sets_to_win:
+            print(f"********** FELICIDADES {player1} HAZ GANADO EL PARTIDO **********")
+            self.display_score(self.players)
+            self.gametime = False
+        elif self.players[player2]['sets'] == self.sets_to_win:
+            print(f"********** FELICIDADES {player2} HAZ GANADO EL PARTIDO **********")
+            self.display_score(self.players)
+            self.gametime = False
 
     def switch_server(self):
         """
@@ -155,7 +193,12 @@ class TennisMatch:
         Debe reflejar la lógica correcta del marcador y el estado actual del partido.
         :return: No regresa nada, solo imprime la cadena.
         """
-        print('\n**********MARCADOR ACTUAL**********')
+
+        if players[player1]['sets'] == 2 or players[player2]['sets'] == 2: # Marcador si acabó el partido
+            print('\n**********MARCADOR FINAL**********')
+        else:
+            print('\n**********MARCADOR ACTUAL**********') # Marcador si no ha acabado el partido
+
         for player, stats in players.items():
             print(f"{player} [puntos:{stats['points']} juegos:{stats['games']} sets:{stats['sets']}]")
         print()  # Salto de linea
@@ -171,7 +214,7 @@ class TennisMatch:
         # Imprimimos el status del juego.
         self.display_score(self.players)
         # Ejecutamos el partido hasta que haya un ganador
-        while self.players[player1]['sets'] != '2' and self.players[player2]['sets'] != '2':
+        while self.gametime:
             tiro = self.shot_election(player1, player2)
             self.score_point(tiro)
 
