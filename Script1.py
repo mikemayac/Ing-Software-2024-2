@@ -2,7 +2,9 @@ from typing import Dict, Any
 
 
 class TennisMatch:
-    def __init__(self):
+    def __init__(self, player1: str, player2: str):
+        self.player1 = player1
+        self.player2 = player2
         self.players = {
             player1: {'points': 0, 'games': 0, 'sets': 0},
             player2: {'points': 0, 'games': 0, 'sets': 0}
@@ -33,7 +35,7 @@ class TennisMatch:
             except ValueError as e:
                 print(f"Solo puedes introducir 1 o 2, prueba de nuevo! {e} \n")
 
-    def score_point(self, shot):
+    def score_point(self, shot: int) -> None:
         """
         Puntuación de los Juegos:
         Esta función se encarga de actualizar la puntuación de los juegos basándose en los puntos ganados por los
@@ -96,7 +98,7 @@ class TennisMatch:
         if self.players[player1]['sets'] == 2 or self.players[player2]['sets'] == 2:
             self.check_match_winner()
 
-    def check_game_winner(self):
+    def check_game_winner(self) -> None:
         """
         Gana un juego:
         Determina si un jugador ha ganado un juego dentro del set actual.
@@ -127,7 +129,7 @@ class TennisMatch:
         # Mostramos el score actual
         self.display_score(self.players)
 
-    def check_set_winner(self):
+    def check_set_winner(self) -> None:
         """
         Gana un Set:
         Implementa la lógica para determinar si un jugador ha ganado un set (alcanzando 6 juegos con una diferencia de
@@ -159,7 +161,7 @@ class TennisMatch:
                 # Mostramos el score actual
                 self.display_score(self.players)
 
-    def check_match_winner(self):
+    def check_match_winner(self) -> None:
         """
         Gana ya totalmente el partido:
         Verificar si un jugador ha ganado el partido.
@@ -175,7 +177,7 @@ class TennisMatch:
             self.display_score(self.players)
             self.gametime = False
 
-    def switch_server(self):
+    def switch_server(self) -> None:
         """
         Cambio de Saque
         Después de que se completa un juego, esta función cambia el servidor al otro jugador. Asegúrate de que el cambio
@@ -188,7 +190,7 @@ class TennisMatch:
             self.current_server = player1
         print(f"El servidor ahora es {self.current_server}.")
 
-    def update_court_side(self):
+    def update_court_side(self) -> None:
         """
         Cambio de Cancha:
         Esta función debe verificar si es necesario cambiar de lado basándose en el número total de juegos jugados.
@@ -213,20 +215,21 @@ class TennisMatch:
         :return: No regresa nada, solo imprime la cadena.
         """
 
-        if players[player1]['sets'] == 2 or players[player2]['sets'] == 2: # Marcador si acabó el partido
+        if self.players[self.player1]['sets'] == 2 or self.players[self.player2]['sets'] == 2:  # Acabó el partido
             print('\n**********MARCADOR FINAL**********')
         else:
-            print('\n**********MARCADOR ACTUAL**********') # Marcador si no ha acabado el partido
+            print('\n**********MARCADOR ACTUAL**********')  # Marcador si no ha acabado el partido
 
-        for player, stats in players.items():
-            print(f"{player} [puntos:{stats['points']} juegos:{stats['games']} sets:{stats['sets']}]")
-        print()  # Salto de linea
+        max_name_length = max(len(self.player1), len(self.player2))
+        for player, stats in self.players.items():
+            name_field = f"{player:{max_name_length}}"
+            print(f"{name_field} [puntos:{stats['points']:<3} juegos:{stats['games']:<2} sets:{stats['sets']}]")
+        print()  # Salto de línea
 
-    def main(self):
+    def main(self) -> None:
         """
-        Método principal para ejecutar el bucle del juego, obtener entradas del usuario, llamar a las funciones
-        correspondientes para marcar puntos y actualizar el estado del juego, y manejar errores de entrada con
-        estructuras try-except.
+        Método principal para ejecutar el bucle del juego, llamar a las funciones correspondientes para marcar puntos y
+        actualizar el estado del juego, y manejar errores de entrada con estructuras try-except.
         :return:
         """
         print(f"\n*** Se esta jugando un partido de tennis en este momento, es el juego #{self.games_played} ***")
@@ -242,5 +245,5 @@ if __name__ == "__main__":
     print("Bienvenido al juego de tennis! \nVan a jugar 2 jugadores, ingresa sus nombres.\n")
     player1 = input("Nombre del jugador 1: ")
     player2 = input("Nombre del jugador 2: ")
-    match = TennisMatch()
+    match = TennisMatch(player1, player2)
     match.main()
