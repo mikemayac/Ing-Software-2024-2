@@ -49,18 +49,54 @@ class TennisMatch:
         :param player:
         :return:
         """
-        # Si el tiro es para jugador 1, le sumamos un punto y se imprime la puntuacion
-        if shot == '1':
-            self.players[player1]['points'] += 1
-            print(f"Punto para {player1}.")
-            print(
-                f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
-        # Si el tiro es para jugador 2, le sumamos un punto y se imprime la puntuacion
-        else:  # Para player2, cubre del 11 al 15.
-            self.players[player2]['points'] += 1
-            print(f"Punto para {player2}.")
-            print(
-                f"El marcador es {player2}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
+        match shot:
+            case 1: # Si el punto es para el jugador 1.
+                # Jugador 1, 15 puntos.
+                if self.players[player1]['points'] == 0:
+                    self.players[player1]['points'] += 15
+                    print(f"Punto para {player1}.")
+                    print(f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
+                # Jugador 1, 30 puntos.
+                elif self.players[player1]['points'] == 15:
+                    self.players[player1]['points'] += 30
+                    print(f"Punto para {player1}.")
+                    print(f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
+                # Jugador 1, 40 puntos.
+                elif self.players[player1]['points'] == 30:
+                    self.players[player1]['points'] += 40
+                    print(f"Punto para {player1}.")
+                    print(f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
+                # Jugador 1, game
+                elif self.players[player1]['points'] == 40:
+                    self.players[player1]['points'] = 'game'
+                    print(f"Punto para {player1}.")
+                    print(f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
+
+            case 2:  # Si el punto es para el jugador 2.
+                # Jugador 2, 15 puntos.
+                if self.players[player1]['points'] == 0:
+                    self.players[player1]['points'] += 15
+                    print(f"Punto para {player1}.")
+                    print(
+                        f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
+                # Jugador 2, 30 puntos.
+                elif self.players[player1]['points'] == 15:
+                    self.players[player1]['points'] += 30
+                    print(f"Punto para {player1}.")
+                    print(
+                        f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
+                # Jugador 2, 40 puntos.
+                elif self.players[player1]['points'] == 30:
+                    self.players[player1]['points'] += 40
+                    print(f"Punto para {player1}.")
+                    print(
+                        f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
+                # Jugador 2, game
+                elif self.players[player1]['points'] == 40:
+                    self.players[player1]['points'] = 'game'
+                    print(f"Punto para {player1}.")
+                    print(
+                        f"El marcador es {player1}:{self.players[player1]['points']} {player2}:{self.players[player2]['points']}")
 
     def check_game_winner(self):
         """
