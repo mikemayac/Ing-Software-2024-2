@@ -58,23 +58,61 @@ print(f"Resultado obtenido: {resultado_obtenido_largo}\n")
 
 # Ejercicio 2: Arbol binario
 class Nodo:
+    """
+    Clase para representar un nodo en un árbol binario ordenado.
+
+    Atributos:
+    - valor (Any): El valor almacenado en el nodo.
+    - izquierdo (Nodo): Referencia al nodo hijo izquierdo.
+    - derecho (Nodo): Referencia al nodo hijo derecho.
+    """
+
     def __init__(self, valor):
+        """
+        Inicializa un nuevo nodo con el valor dado.
+
+        Parámetros:
+        - valor (Any): El valor que se almacenará en el nodo.
+        """
         self.valor = valor
-        self.izquierdo = None
-        self.derecho = None
+        self.izquierdo = None  # Inicialmente no tiene hijo izquierdo.
+        self.derecho = None    # Inicialmente no tiene hijo derecho.
 
 
 class ArbolBinarioOrdenado:
+    """
+    Clase para representar un árbol binario ordenado.
+
+    Atributos:
+    - raiz (Nodo): La raíz del árbol binario ordenado.
+    """
+
     def __init__(self):
+        """
+        Inicializa un nuevo árbol binario ordenado vacío.
+        """
         self.raiz = None
 
     def agregar(self, valor):
+        """
+        Agrega un nuevo valor al árbol binario ordenado.
+
+        Parámetros:
+        - valor (Any): El valor que se agregará al árbol.
+        """
         if not self.raiz:
-            self.raiz = Nodo(valor)
+            self.raiz = Nodo(valor)  # Si el árbol está vacío, el nuevo valor se convierte en la raíz.
         else:
-            self._agregar(valor, self.raiz)
+            self._agregar(valor, self.raiz)  # De lo contrario, se busca la posición correcta para el nuevo valor.
 
     def _agregar(self, valor, nodo):
+        """
+        Método auxiliar recursivo para agregar un nuevo valor al árbol en la posición correcta.
+
+        Parámetros:
+        - valor (Any): El valor que se agregará al árbol.
+        - nodo (Nodo): El nodo actual en el árbol durante la recursión.
+        """
         if valor <= nodo.valor:
             if nodo.izquierdo:
                 self._agregar(valor, nodo.izquierdo)
@@ -86,4 +124,80 @@ class ArbolBinarioOrdenado:
             else:
                 nodo.derecho = Nodo(valor)
 
+    def recorrido_pre_orden(self, nodo=None):
+        """
+        Realiza un recorrido pre-orden del árbol e imprime los valores de los nodos.
 
+        Parámetros:
+        - nodo (Nodo, opcional): El nodo actual en el árbol durante la recursión. Si es None, se inicia con la raíz.
+        """
+        if nodo is None:
+            nodo = self.raiz
+        print(nodo.valor, end=' ')
+        if nodo.izquierdo:
+            self.recorrido_pre_orden(nodo.izquierdo)
+        if nodo.derecho:
+            self.recorrido_pre_orden(nodo.derecho)
+
+    def recorrido_in_orden(self, nodo=None):
+        """
+        Realiza un recorrido in-orden del árbol e imprime los valores de los nodos.
+
+        Parámetros:
+        - nodo (Nodo, opcional): El nodo actual en el árbol durante la recursión. Si es None, se inicia con la raíz.
+        """
+        if nodo is None:
+            nodo = self.raiz
+        if nodo.izquierdo:
+            self.recorrido_in_orden(nodo.izquierdo)
+        print(nodo.valor, end=' ')
+        if nodo.derecho:
+            self.recorrido_in_orden(nodo.derecho)
+
+    def recorrido_post_orden(self, nodo=None):
+        """
+        Realiza un recorrido post-orden del árbol e imprime los valores de los nodos.
+
+        Parámetros:
+        - nodo (Nodo, opcional): El nodo actual en el árbol durante la recursión. Si es None, se inicia con la raíz.
+        """
+        if nodo is None:
+            nodo = self.raiz
+        if nodo.izquierdo:
+            self.recorrido_post_orden(nodo.izquierdo)
+        if nodo.derecho:
+            self.recorrido_post_orden(nodo.derecho)
+        print(nodo.valor, end=' ')
+
+
+# Casos de prueba para el arbol binario ordenado.
+
+# Caso de prueba 1
+arbol = ArbolBinarioOrdenado()
+arbol.agregar(3)
+arbol.agregar(1)
+arbol.agregar(4)
+print("Recorrido In-Orden para el Caso de Prueba 2:")
+arbol.recorrido_in_orden()
+print("\n")
+
+# Caso de prueba 2
+print("Recorrido Pre-Orden para el Caso de Prueba 3:")
+arbol.recorrido_pre_orden()
+print("\n")
+
+# Caso de prueba 3
+print("Recorrido Post-Orden para el Caso de Prueba 4:")
+arbol.recorrido_post_orden()
+print("\n")
+
+# Caso de prueba 4
+arbol = ArbolBinarioOrdenado()
+for valor in [5, 3, 7, 2, 4, 6, 8]:
+    arbol.agregar(valor)
+print("Recorrido In-Orden para el Caso de Prueba 5:")
+arbol.recorrido_in_orden()
+print("\nRecorrido Pre-Orden:")
+arbol.recorrido_pre_orden()
+print("\nRecorrido Post-Orden:")
+arbol.recorrido_post_orden()
