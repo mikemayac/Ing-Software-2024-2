@@ -115,6 +115,12 @@ class TennisMatch:
         self.players[player1]['points'] = 0
         self.players[player2]['points'] = 0
 
+        # Funcion para que cambie quien saca en cada tiro, esto es cambiar de servidor en cada juego.
+        self.switch_server()
+
+        # Funcion para verificar si es necesario cambiar de lado de la cancha basado en las reglas que se proponen.
+        self.update_court_side()
+
         # Sumamos un juego jugado.
         self.games_played += 1
 
@@ -176,7 +182,11 @@ class TennisMatch:
         se realice correctamente después de cada juego.
         :return:
         """
-        pass
+        if self.current_server == player1:
+            self.current_server = player2
+        else:
+            self.current_server = player1
+        print(f"El servidor ahora es {self.current_server}.")
 
     def update_court_side(self):
         """
@@ -185,7 +195,16 @@ class TennisMatch:
         Debe ser llamada después de cada juego para determinar si se requiere un cambio de cancha.
         :return:
         """
-        pass
+        # Calcula el total de juegos jugados en el set actual.
+        total_games_current_set = self.players[player1]['games'] + self.players[player2]['games']
+
+        # Verifica si el total de juegos en el set actual es impar para cambiar de lado.
+        if total_games_current_set % 2 == 1:
+            print("Los jugadores cambian de lado de la cancha.")
+        else:
+            # Adicionalmente, puedes verificar aquí si se necesita cambiar de lado al inicio de un nuevo set.
+            if total_games_current_set == 0 and self.games_played > 1:  # Nuevo set, después del primer set.
+                print("Nuevo set: Los jugadores cambian de lado de la cancha.")
 
     def display_score(self, players: Dict[str, Dict[str, Any]]) -> None:
         """
