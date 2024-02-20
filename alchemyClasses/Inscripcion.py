@@ -17,4 +17,5 @@ class Inscripcion(db.Model):
 
     def __str__(self):
         #Que regrese el nombre del alumno y que regrese el nombre de la clase.
-        return f"Alumno: {}\nClase: {}\nFecha: {self.fecha}"
+        # return f"Alumno: {}\nClase: {}\nFecha: {self.fecha}"
+        pass
