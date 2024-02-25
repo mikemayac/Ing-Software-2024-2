@@ -7,8 +7,7 @@
     <list default="true" id="9f943dd5-3f1e-483f-bacb-dbc42385170a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/detalle_usuario.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/detalle_usuario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/usuario.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/usuario.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/pelicula.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/pelicula.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,15 +158,26 @@
       <updated>1708375517460</updated>
       <workItem from="1708375518578" duration="2143000" />
       <workItem from="1708390285400" duration="11159000" />
-      <workItem from="1708821923211" duration="14041000" />
+      <workItem from="1708821923211" duration="21092000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>10</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Ing_Software_2024_2$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1708460880013" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/Ing_Software_2024_2$main.coverage" NAME="main Coverage Results" MODIFIED="1708845515834" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Ing_Software_2024_2$main.coverage" NAME="main Coverage Results" MODIFIED="1708855128580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
