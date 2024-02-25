@@ -1,4 +1,3 @@
-# En usuario.py o detalle_usuario.py dependiendo de tu estructura
 from db.database import get_db_connection
 
 
@@ -18,9 +17,10 @@ def filtrar_usuarios_por_apellido(apellido):
     try:
         with connection.cursor() as cursor:
             # Asume que el apellido está en la columna `apPat`
-            sql = "SELECT * FROM `detalle_usuario` WHERE `apPat` LIKE %s"
-            cursor.execute(sql, ('%' + apellido,))
-            result = cursor.fetchall()
-            return result
+            sql = "SELECT * FROM `detalles_usuario` WHERE `apPat` LIKE %s OR `apMat` LIKE %s"
+            cursor.execute(sql, ('%' + apellido + '%', '%' + apellido + '%'))
+            resultados = cursor.fetchall()
+            for resultado in resultados:
+                print(resultado)
     finally:
         connection.close()

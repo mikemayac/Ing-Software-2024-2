@@ -1,6 +1,6 @@
 from db.database import get_db_connection
 from models.usuario import insert_usuario
-from models.detalle_usuario import filtrar_usuarios_por_apellido
+from models.detalle_usuario import insert_detalle_usuario, filtrar_usuarios_por_apellido
 from models.genero import insertar_genero
 from models.pelicula import insert_pelicula, cambiar_genero_pelicula, insert_rentar, eliminar_rentas_antiguas
 import datetime
@@ -9,9 +9,15 @@ def main():
     # 1. Insertar al menos 1 registro en cada tabla.
     # Asegúrate de que estos métodos retornen el ID del registro insertado si es necesario para las claves foráneas.
     id_usuario = insert_usuario('test@example.com', 'securepassword', 0)
-    id_genero = insertar_genero('Comedia')
-    id_pelicula = insert_pelicula('Mi Película', id_genero, 120, 10)
-    insert_rentar(id_usuario, id_pelicula, datetime.datetime.now(), 5, 'activo')
+    if id_usuario:
+        insert_detalle_usuario(id_usuario, 'Nombre', 'ApellidoPaterno', 'ApellidoMaterno', 'url/a/imagen.jpg')
+        id_genero = insertar_genero('Comedia')
+        if id_genero:
+            id_pelicula = insert_pelicula('Mi Película', id_genero, 120, 10)
+            if id_pelicula:
+                insert_rentar(id_usuario, id_pelicula, datetime.datetime.now(), 5, 'activo')
+    else:
+        print("No se pudo insertar el usuario. Verifique que el email no esté duplicado.")
 
     # 2. Filtrar a la tabla Usuario por apellido.
     apellido_a_buscar = input("Ingrese el final del apellido a buscar: ")
