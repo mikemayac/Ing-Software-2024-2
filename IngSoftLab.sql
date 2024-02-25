@@ -4,8 +4,12 @@ USE lab_ing_software;
 
 -- Creación del Usuario (manteniendo tu configuración original)
 CREATE USER IF NOT EXISTS 'lab'@'localhost' IDENTIFIED BY 'Developer123!';
+-- Otorgar privilegios específicos al usuario 'lab'
 GRANT SELECT, INSERT, UPDATE, DELETE ON lab_ing_software.* TO 'lab'@'localhost';
 FLUSH PRIVILEGES;
+
+-- Las siguientes operaciones pueden ser ejecutadas por el usuario 'lab'
+-- después de reconectar a la base de datos como 'lab'.
 
 -- Tabla de Usuarios para autenticación y roles
 CREATE TABLE IF NOT EXISTS `usuarios` (
